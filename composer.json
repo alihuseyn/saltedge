@@ -1,0 +1,20 @@
+{
+    "name": "pinty/saltedge",
+    "description": "SaltEdge Spectre API connection library",
+    "type": "library",
+    "authors": [{
+            "name": "Alihuseyn Gulmammadov",
+            "email": "alihuseyn13@gmail.com"
+        },
+        {
+            "name": "Tamer Saritepe",
+            "email": "tsaritepe@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "SaltEdge\\": "saltedge/"
+        }
+    }
+}
