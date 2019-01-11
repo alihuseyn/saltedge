@@ -53,7 +53,7 @@ class SaltEdge
         if ($this->privateKey === false) {
             // There was an error loading the private key
             // Either the path to the key is incorrect or the key password
-            throw new InvalidArgumentException("Could not load the private key.");
+            throw new \InvalidArgumentException("Could not load the private key.");
         }
 
         // Initialize cURL
@@ -62,7 +62,7 @@ class SaltEdge
         if ($this->curlHandle === false) {
             // There was an error loading the private key
             // Either the path to the key is incorrect or the key password
-            throw new RuntimeException("Could not initialize cURL library.");
+            throw new \RuntimeException("Could not initialize cURL library.");
         }
     }
 
@@ -128,7 +128,7 @@ class SaltEdge
     {
         // Check if by chance the object has been shut down
         if ($this->privateKey === null || $this->curlHandle === null) {
-            throw new LogicException("Failed to request using object that has been shut down.");
+            throw new \LogicException("Failed to request using object that has been shut down.");
         }
 
         // Default expiration time to 3 minutes from now
@@ -138,24 +138,24 @@ class SaltEdge
         $payload = is_string($payload) ? $payload : json_encode($payload);
 
         // Prepare the signature
-        $signature = $expires . "|" . $method . "|" . $url . "|" . $payload;
-        $signatureCipher = "";
+        $data = $expires . "|" . $method . "|" . $url . "|" . $payload;
+        $signature = "";
 
         // Sign the data
         $signingResult = openssl_sign(
+          $data,
           $signature,
-          $signatureCipher,
           $this->privateKey,
           OPENSSL_ALGO_SHA256
         );
 
         if (!$signingResult) {
             // Preparing the signature failed.
-            throw new Exception('Failed to prepare the signature of the request.');
+            throw new \Exception('Failed to prepare the signature of the request.');
         }
 
         // The signature should be a base64 encoded string
-        $signingResult = base64_encode($signingResult);
+        $signature = base64_encode($signature);
 
         // Prepare curl options
         $curlOptions = array(
@@ -163,7 +163,7 @@ class SaltEdge
             CURLOPT_HTTPHEADER => array(
                 "Content-Type: application/json",
                 "Expires-at: {$expires}",
-                "Signature: {$signingResult}",
+                "Signature: {$signature}",
                 "App-id: {$this->appId}",
                 "Secret: {$this->secret}",
             ),
@@ -191,7 +191,7 @@ class SaltEdge
 
         // Throw an exception when the cURL library fails to fulfill the request
         if ($response === false) {
-            throw new RuntimeException(curl_error($this->curlHandle));
+            throw new \RuntimeException(curl_error($this->curlHandle));
         }
 
         return $response;
