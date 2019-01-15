@@ -1,24 +1,10 @@
 <?php
 
-/**
-* DISCLAIMER:
-* THIS FILE SHOULD SERVE AS A REFERENCE IMPLEMENTATION OF "SaltEdge" CLASS USAGE.
-* IT IS NOT PRODUCTION READY, NOR INTENDED TO BE USED FOR REAL WORLD REQUESTS.
-*/
-
-/**
- * NOTE: This sample requires the following extensions installed and enabled:
- * - php_curl
- * - php_openssl
- */
-
-require "vendor/autoload.php";
-
-use SaltEdge\SaltEdge;
+require __DIR__ . "/vendor/autoload.php";
 
 // Client access credentials
-define('APP_ID', "APP_ID");
-define("SECRET", "SECRET");
+define('APP_ID', "AmKCmUJvvY-S04yl7miuqJ1FdF1sqJHLwtl1pvOKDfo");
+define("SECRET", "rWErDccAZ1dSKlQD9W7YgIel5OZahue-SmZSNUcPvjE");
 
 // Private key details
 $scriptPath     = dirname(__FILE__);
@@ -27,25 +13,11 @@ $privateKeyPass = null;                               // Optional, if the privat
 
 // Initialize
 try {
-    $seClient = new SaltEdge(APP_ID, SECRET, $privateKeyPath, $privateKeyPass);
-
-    // This is how a GET request is made
-    echo $seClient->get("https://www.saltedge.com/api/v4/countries");
-
-    // This is how a POST request is made
-    /*
-    $payload = array(
-        "data" =>  array(
-            "identifier" => "some_id",
-        ),
-    );
-
-    echo $seClient->post("https://www.saltedge.com/api/v4/customers", $payload);
-    */
-
-    $seClient->shutdown();
-
-} catch (Exception $exc) {
-    // Handle possible errors
-    echo $exc->getMessage();
+    $spectre = new \SaltEdge\Spectre(APP_ID, SECRET, $privateKeyPath, $privateKeyPass);
+    $spectre->token()->connect(['customer_id' => 3079342 ])->redirect();
+    $spectre->terminate();
+} catch (Exception $e) {
+    echo "<pre>";
+    print_r($e->getMessage());
+    echo "</pre>";
 }

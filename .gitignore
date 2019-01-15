@@ -1,1 +1,6 @@
 /vendor/
+private.pem
+public.pem
+index.php
+/.idea/
+composer.lock

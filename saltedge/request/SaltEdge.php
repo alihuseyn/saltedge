@@ -1,6 +1,6 @@
 <?php
 
-namespace SaltEdge;
+namespace SaltEdge\Request;
 
 /**
  * Class SaltEdge
@@ -139,7 +139,6 @@ class SaltEdge
 
         // Prepare the signature
         $data = $expires . "|" . $method . "|" . $url . "|" . $payload;
-        $signature = "";
 
         // Sign the data
         $signingResult = openssl_sign(
