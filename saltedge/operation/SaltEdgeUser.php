@@ -9,7 +9,7 @@ class SaltEdgeUser extends Operation {
      /**
      * @var string token operation endpoint for create
      */
-    const ENDPOINT_CREATE = 'customers';
+    const ENDPOINT = 'customers';
     
      /**
      * @var array $response Response content after successful request
@@ -20,5 +20,166 @@ class SaltEdgeUser extends Operation {
     {
         parent::__construct($connection);
     }
+    
+
+    /* Create customer
+       Creates a customer, returning the customer object.
+       
+       -identifier (string, required) - a unique identifier of the new customer
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @param $identifier
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+    
+    public function create($identifier)
+    {
+        // Request Body
+        $body = [ 'data' => ['identifier' => $identifier]];
+        var_dump($body);
+        // Make request
+        $raw = $this->connection->post($this->url(self::ENDPOINT), $body);
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
+     /* Show customer
+        Returns the customer object.
+       
+       -id (string, required) - the id of customer
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @param $id
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+    
+    public function show($id)
+    {
+        
+        // Make request
+        $raw = $this->connection->get($this->url(self::ENDPOINT."/".$id));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
+      /* 
+        List customers
+        List all of your app’s customers. This route is available only for web applications, not mobile ones.
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+     
+     public function list()
+    {
+       
+        // Make request
+        $raw = $this->connection->get($this->url(self::ENDPOINT));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
+    
+    /* 
+        Remove customer
+        Deletes a customer, returning the customer object. This route is available only for web applications.
+         
+        -id (string, required) - the id of customer
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @param $id
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+    
+    public function remove($id)
+    {
+        // Make request
+        $raw = $this->connection->delete($this->url(self::ENDPOINT."/".$id));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
+     /* 
+        Lock customer
+        Locks a customer and its data, returning the customer object.
+        All customer related data including logins, accounts, transactions, attempts will not be available for reading, updating or deleting even by Salt Edge. This route is available only for web applications.  
+        
+        -id (string, required) - the id of customer
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @param $id
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+     
+     public function lock($id)
+    {
+         // Make request
+        $raw = $this->connection->put($this->url(self::ENDPOINT."/".$id."/lock"));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
+       /* 
+        }
+        Unlock customer
+        Unlocks a customer and its data, returning the customer object. This route is available only for web applications.    
+        
+        -id (string, required) - the id of customer
+        
+        @see https://docs.saltedge.com/reference/#customers
+        @param $id
+        @throws \Exception
+        @return SaltEdgeUser
+    */
+     
+     public function unlock($id)
+    {
+         // Make request
+        $raw = $this->connection->put($this->url(self::ENDPOINT."/".$id."/unlock"));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+    
     
 }
