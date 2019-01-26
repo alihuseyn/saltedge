@@ -10,6 +10,7 @@ class SaltEdgeUser extends Operation {
      * @var string token operation endpoint for create
      */
     const ENDPOINT = 'customers';
+    const ENDPOINT_LOGINS = 'logins';
     
      /**
      * @var array $response Response content after successful request
@@ -181,5 +182,31 @@ class SaltEdgeUser extends Operation {
         return $this;
     }
     
+    /*
+    Listing logins
+    Returns all the logins accessible to your application. The logins are sorted in ascending order of their ID, so the newest logins will come last. We recommend you fetch the whole list of logins to check whether any of the properties have changed. You can read more about next_id field, in the pagination section of the reference.
+    
+        -id (string, required) - the id of customer
+        
+        @see https://docs.saltedge.com/reference/#logins-list
+        @param $id
+        @throws \Exception
+        @return SaltEdgeUser
+    
+    */
+    
+    public function listLogin($id)
+    {
+         // Make request
+        $raw = $this->connection->get($this->url(self::ENDPOINT_LOGINS."?customer_id=".$id));
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
     
 }
