@@ -3,6 +3,7 @@
 namespace SaltEdge;
 
 use SaltEdge\Operation\Token;
+use SaltEdge\Operation\Transaction;
 use SaltEdge\Request\SaltEdge;
 
 /**
@@ -52,6 +53,15 @@ class Spectre
     public function token() : Token
     {
         return new Token($this->connection);
+    }
+
+    /**
+     * Initialize transaction class and return it
+     * @return Transaction
+     */
+    public function transaction(): Transaction
+    {
+        return new Transaction($this->connection);
     }
 
     /**

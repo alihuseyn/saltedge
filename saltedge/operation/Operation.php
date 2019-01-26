@@ -23,6 +23,12 @@ abstract class Operation
     protected $connection;
 
     /**
+     * @var array $response Response content after successful request
+     */
+    protected $response;
+
+
+    /**
      * Operation constructor.
      * @param SaltEdge $connection
      */
@@ -33,12 +39,32 @@ abstract class Operation
 
     /**
      * Generate url for required endpoint with base url
+     * and given query parameters
      * @param $endpoint
+     * @param $query
      * @return string
      */
-    public function url($endpoint)
+    public function url($endpoint,array $query = [])
     {
-        return trim(self::URL . ltrim( $endpoint, '/'));
+        $url = trim(self::URL . ltrim( $endpoint, '/'));
+        if (!empty($query)) {
+            $_ = [];
+            foreach ($query as $q => $v) {
+                if (!empty($v)) {
+                    array_push($_, "{$q}={$v}");
+                }
+            }
+            $url .= "?".implode("&", $_);
+        }
+
+        return $url;
     }
 
+    /**
+     * @return array return response after successful request
+     */
+    public function response():array
+    {
+        return $this->response;
+    }
 }
