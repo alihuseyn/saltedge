@@ -11,10 +11,16 @@
             "email": "tsaritepe@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=7.0.0",
+        "vlucas/phpdotenv": "^3.1",
+        "nesbot/carbon": "^2.10"
+    },
     "autoload": {
         "psr-4": {
-            "SaltEdge\\": "saltedge/"
+            "SaltEdge\\": "saltedge/",
+            "SaltEdge\\Request\\": "saltedge/request/",
+            "SaltEdge\\Operation\\": "saltedge/operation/"
         }
     }
 }
