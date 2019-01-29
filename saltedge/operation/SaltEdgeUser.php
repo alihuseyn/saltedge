@@ -38,7 +38,6 @@ class SaltEdgeUser extends Operation {
     {
         // Request Body
         $body = [ 'data' => ['identifier' => $identifier]];
-        var_dump($body);
         // Make request
         $raw = $this->connection->post($this->url(self::ENDPOINT), $body);
         $this->response = json_decode($raw, true);
