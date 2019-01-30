@@ -21,11 +21,6 @@ class Token extends Operation
      */
     const ENDPOINT_CREATE = 'tokens/create';
 
-    /**
-     * @var array $response Response content after successful request
-     */
-    private $response;
-
 
     public function __construct(SaltEdge $connection)
     {
@@ -118,15 +113,6 @@ class Token extends Operation
     {
         return $this->connect(['client_id' => $clientId]);
     }
-
-    /**
-     * @return array return response after successful request
-     */
-    public function response():array
-    {
-        return $this->response;
-    }
-
 
     /**
      * Redirect user to the token page after operation
