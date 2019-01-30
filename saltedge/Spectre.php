@@ -56,6 +56,7 @@ class Spectre
     }
 
     /**
+
      * Initialize transaction class and return it
      * @return Transaction
      */

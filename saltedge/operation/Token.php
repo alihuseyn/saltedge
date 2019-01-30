@@ -21,10 +21,7 @@ class Token extends Operation
      */
     const ENDPOINT_CREATE = 'tokens/create';
 
-    /**
-     * Token constructor.
-     * @param SaltEdge $connection
-     */
+
     public function __construct(SaltEdge $connection)
     {
         parent::__construct($connection);

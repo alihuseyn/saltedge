@@ -241,7 +241,7 @@ class SaltEdge
      * @throws RuntimeException If cURL fails to fulfill the request
      * @return mixed
      */
-    public function put($url, $payload, $expire = null)
+    public function put($url, $payload = null, $expire = null)
     {
         return $this->request('PUT', $url, $payload, $expire);
     }
