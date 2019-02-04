@@ -5,6 +5,7 @@ namespace SaltEdge;
 use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
 use SaltEdge\Request\SaltEdge;
+use SaltEdge\Operation\SaltEdgeUser;
 
 /**
  * Class Spectre
@@ -64,7 +65,17 @@ class Spectre
     {
         return new Transaction($this->connection);
     }
+    
+     /**
 
+     * Create new customer and return it
+     * @return Transaction
+     */
+    public function user(): SaltEdgeUser
+    {
+        return new SaltEdgeUser($this->connection);
+    }
+    
     /**
      * Close connection with API
      */

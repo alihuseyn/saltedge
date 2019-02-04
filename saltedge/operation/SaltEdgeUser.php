@@ -15,7 +15,7 @@ class SaltEdgeUser extends Operation {
      /**
      * @var array $response Response content after successful request
      */
-    private $response;
+    protected $private;
     
     public function __construct(SaltEdge $connection)
     {
