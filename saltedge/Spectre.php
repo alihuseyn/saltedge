@@ -2,6 +2,7 @@
 
 namespace SaltEdge;
 
+use SaltEdge\Operation\Account;
 use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
 use SaltEdge\Request\SaltEdge;
@@ -64,6 +65,15 @@ class Spectre
     public function transaction(): Transaction
     {
         return new Transaction($this->connection);
+    }
+
+    /**
+     * Initialize account class and return it
+     * @return Account
+     */
+    public function accounts(): Account
+    {
+        return new Account($this->connection);
     }
     
      /**
