@@ -15,7 +15,7 @@ class SaltEdgeUser extends Operation {
      /**
      * @var array $response Response content after successful request
      */
-    protected $private;
+    protected $response;
     
     public function __construct(SaltEdge $connection)
     {
@@ -24,14 +24,14 @@ class SaltEdgeUser extends Operation {
     
 
     /* Create customer
-       Creates a customer, returning the customer object.
+       Creates a customer, returning response.
        
        -identifier (string, required) - a unique identifier of the new customer
         
         @see https://docs.saltedge.com/reference/#customers
         @param $identifier
         @throws \Exception
-        @return SaltEdgeUser
+        @return response
     */
     
     public function create($identifier)
@@ -41,13 +41,12 @@ class SaltEdgeUser extends Operation {
         // Make request
         $raw = $this->connection->post($this->url(self::ENDPOINT), $body);
         $this->response = json_decode($raw, true);
-
         // Check for error response
         if (isset($this->response['error_class'])) {
             throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
         }
 
-        return $this;
+        return $this->response;
     }
     
      /* Show customer
