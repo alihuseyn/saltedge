@@ -6,6 +6,7 @@ use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
 use SaltEdge\Request\SaltEdge;
 use SaltEdge\Operation\SaltEdgeUser;
+use SaltEdge\Operation\Category;
 
 /**
  * Class Spectre
@@ -74,6 +75,16 @@ class Spectre
     public function user(): SaltEdgeUser
     {
         return new SaltEdgeUser($this->connection);
+    }
+    
+    /**
+
+     * Create new category class and return it
+     * @return Transaction
+     */
+    public function category(): Category
+    {
+        return new Category($this->connection);
     }
     
     /**
