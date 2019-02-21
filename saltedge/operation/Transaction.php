@@ -61,7 +61,7 @@ class Transaction extends Operation
     public function fetch(array $params): Transaction
     {
 
-        if (empty($params) || !isset($params['account_id']) || !isset($params['login_id'])) {
+        if (empty($params) || (!isset($params['account_id']) && !isset($params['login_id']))) {
             throw new \Exception("Account ID or Login ID can't be empty or null.");
         }
 
