@@ -21,7 +21,20 @@ class Token extends Operation
      */
     const ENDPOINT_CREATE = 'tokens/create';
 
+    /**
+     * @var  string token operation endpoint for reconnect
+     */
+    const ENDPOINT_RECONNECT = 'tokens/reconnect';
 
+    /**
+     * @var  string token operation endpoint for refresh
+     */
+    const ENDPOINT_REFRESH = 'tokens/refresh';
+
+    /**
+     * Constructor
+     * @param SaltEdge $connection Connection information
+     */
     public function __construct(SaltEdge $connection)
     {
         parent::__construct($connection);
@@ -32,36 +45,7 @@ class Token extends Operation
      * You will receive a connect_url field, which allows you to enter directly to Salt Edge Connect
      * with your newly generated token. Explanation of parameters are as below:
      *
-     *  - customer_id (string, required) - the ID of the customer received from customer create
-     *  - allowed_countries (array of strings, optional) - the list of countries that will be accessible in Salt Edge Connect, defaults to null
-     *  - provider_code (string, optional) - the code of the desired provider, defaults to null
-     *  - fetch_scopes (array of strings, required) - fetching mode,
-     *    possible values: ['accounts'], ['holder_info'], ['accounts', 'holder_info'], ['accounts', 'transactions'], ['accounts', 'holder_info', 'transactions']
-     *  - fetched_accounts_notify (boolean, optional) - whether Salt Edge should send a success callback after fetching accounts. Defaults to false
-     *  - identify_merchant (boolean, optional) - whether merchant identification should be applied. Defaults to false
-     *  - customer_last_logged_at (datetime, optional) - the datetime when user was last active in your application
-     *  - custom_fields (object, optional) - a JSON object, which will be sent back on any of your callbacks
-     *  - daily_refresh (boolean, optional) - whether the login should be automatically refreshed by Salt Edge
-     *  - disable_provider_search (boolean, optional) - whether the provider search will be disabled, works only if provider_code parameter is sent. Defaults to false
-     *  - from_date (date, optional) - date from which you want to fetch data for your login.
-     *      Note: The usage of this parameter is only available when fetch_scopes parameter contains transactions, otherwise InvalidFromDate error will be returned.
-     *      The allowed values for this parameter must be within exactly 2 months ago and tomorrow.
-     *  - to_date (date, optional) - date until which you want to fetch data for your login.
-     *  - locale (string, optional) - the language of the Salt Edge Connect page in the ISO 639-1 format.
-     *  - return_to (string, optional) - the URL the user will be redirected to, defaults to client’s home URL
-     *  - return_login_id (boolean, optional) - whether to append login_id to return_to URL. Defaults to false
-     *  - provider_modes (array of strings, optional) - restrict the list of the providers to only the ones that have the mode included in the array.
-     *  - categorization (string, optional) - the type of categorization applied. Possible values: none, personal, business. Default: personal
-     *  - javascript_callback_type (string, optional) - allows you to specify what kind of callback type you are expecting .Possible values: iframe, external_saltbridge, external_notify, post_message
-     *  - include_fake_providers (boolean, optional) Defaults to false
-     *  - lost_connection_notify - (boolean, optional) being sent as true, enables you to receive a javascript callback whenever the internet connection
-     *      is lost during the fetching process. The type of the callback depends on the javascript_callback_type you specified.
-     *  - show_consent_confirmation (boolean, optional)
-     *  - consent_period_days (integer, optional)
-     *  - credentials_strategy (string, optional) - the strategy of storing customers credentials. Possible values: store, do_not_store, ask. Default value: store.
-     *  - include_natures (array of strings, optional) - the natures of the accounts that need to be fetched. Check accounts attributes for possible values. Default value: null (all accounts will be fetched)
-     *
-     * @see https://docs.saltedge.com/reference/#tokens
+     * @see https://docs.saltedge.com/account_information/v4/#tokens-create
      * @param array $params Required parameters
      * @throws \Exception
      * @return Token
@@ -129,8 +113,113 @@ class Token extends Operation
         throw new \Exception("Connect URL is not set for redirection");
     }
 
-    public function refresh()
+    /**
+     * Allows you to create a token, which will be used to access 
+     * Salt Edge Connect to reconnect a login. You will receive a connect_url field, 
+     * which allows you to enter directly to Salt Edge Connect with your newly generated token.
+     *
+     * @see https://docs.saltedge.com/account_information/v4/#tokens-reconnect
+     * @param array $params Required parameters
+     * @throws \Exception
+     * @return Token
+     */
+    public function reconnect(array $params) : Token
     {
-        // TODO: Implementation
+        $defaultParameters = [
+            'login_id' => '',     // Required
+            'fetch_scopes' => [ 'accounts', 'transactions' ],
+            'fetched_accounts_notify' => true,
+            'to_date' => Carbon::now()->toDateString(),
+            'locale' => 'tr',
+            'return_login_id' => true,
+            'javascript_callback_type' => 'post_message',
+            'lost_connection_notify' => true,
+            'credentials_strategy' => 'store'
+        ];  
+
+        if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
+            throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
+        }
+
+        // Request Body
+        $body = [ 'data' => array_replace($defaultParameters, $params) ];
+
+        // Make request
+        $raw = $this->connection->post($this->url(self::ENDPOINT_RECONNECT), $body);
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+
+    /**
+     * Call reconnect function with configured parameters
+     * It is used for simplified and fast access to reconnect function
+     * @param $loginId
+     * @return Token
+     * @throws \Exception
+     */
+    public function reconnectWithLoginId($loginId) : Token
+    {
+        return $this->reconnect(['login_id' => $loginId]);
+    }
+
+    /**
+     * Allows you to create a token, which will be used to access Salt Edge Connect 
+     * to refresh a login. You will receive a connect_url field, which allows you to enter 
+     * directly to Salt Edge Connect with your newly generated token.
+     *
+     * @see https://docs.saltedge.com/account_information/v4/#tokens-refresh
+     * @param array $params Required parameters
+     * @throws \Exception
+     * @return Token
+     */
+    public function refresh(array $params) : Token
+    {
+        $defaultParameters = [
+            'login_id' => '',     // Required
+            'fetch_scopes' => [ 'accounts', 'transactions' ],
+            'fetched_accounts_notify' => true,
+            'to_date' => Carbon::now()->toDateString(),
+            'locale' => 'tr',
+            'return_login_id' => true,
+            'javascript_callback_type' => 'post_message',
+            'lost_connection_notify' => true,
+            'credentials_strategy' => 'store'
+        ];  
+
+        if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
+            throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
+        }
+
+        // Request Body
+        $body = [ 'data' => array_replace($defaultParameters, $params) ];
+
+        // Make request
+        $raw = $this->connection->post($this->url(self::ENDPOINT_REFRESH), $body);
+        $this->response = json_decode($raw, true);
+
+        // Check for error response
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
+
+        return $this;
+    }
+
+    /**
+     * Call refresh function with configured parameters
+     * It is used for simplified and fast access to refresh function
+     * @param $loginId
+     * @return Token
+     * @throws \Exception
+     */
+    public function refreshWithLoginId($loginId) : Token
+    {
+        return $this->refresh(['login_id' => $loginId]);
     }
 }
