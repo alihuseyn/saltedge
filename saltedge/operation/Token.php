@@ -56,15 +56,8 @@ class Token extends Operation
             'customer_id' => -1,     // Required
             'allowed_countries' => ["TR"],
             'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'fetched_accounts_notify' => true,
-            'disable_provider_search' => false,
-            'to_date' => Carbon::now()->toDateString(),
             'locale' => 'tr',
             'return_login_id' => true,
-            'javascript_callback_type' => 'post_message',
-            'include_fake_providers' => false,
-            'lost_connection_notify' => true,
-            'credentials_strategy' => 'store'
         ];
 
         if (empty($params) || !isset($params['customer_id']) || $params['customer_id'] == -1 || !is_int($params['customer_id'])) {
@@ -128,13 +121,8 @@ class Token extends Operation
         $defaultParameters = [
             'login_id' => '',     // Required
             'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'fetched_accounts_notify' => true,
-            'to_date' => Carbon::now()->toDateString(),
             'locale' => 'tr',
-            'return_login_id' => true,
-            'javascript_callback_type' => 'post_message',
-            'lost_connection_notify' => true,
-            'credentials_strategy' => 'store'
+            'return_login_id' => true
         ];  
 
         if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
@@ -183,13 +171,8 @@ class Token extends Operation
         $defaultParameters = [
             'login_id' => '',     // Required
             'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'fetched_accounts_notify' => true,
-            'to_date' => Carbon::now()->toDateString(),
             'locale' => 'tr',
             'return_login_id' => true,
-            'javascript_callback_type' => 'post_message',
-            'lost_connection_notify' => true,
-            'credentials_strategy' => 'store'
         ];  
 
         if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
