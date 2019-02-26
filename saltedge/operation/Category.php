@@ -5,18 +5,13 @@ namespace SaltEdge\Operation;
 use SaltEdge\Request\SaltEdge;
 
 /**
- * Class Transaction
- * We use this class to fetch transactions related with given
- * account information.
- * A transaction represents a movement of funds. Any transaction can represent a
- * monetary transfer, withdrawal, income or expense interchange.
  * @package SaltEdge\Operation
  */
 class Category extends Operation
 {
 
     /**
-     * @var string transactions endpoint
+     * @var string categories endpoint
      */
     const ENDPOINT = "categories";
 
@@ -30,22 +25,18 @@ class Category extends Operation
     }
 
 
-    /* 
-    
-    Listing categories
-    You can get the list of all the categories that we support.
-    
-    */
-    
-    public function list()
+    /**
+     * Listing categories
+     * You can get the list of all the categories that we support.
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function list() : array
     {
-       
         $raw = $this->connection->get($this->url(self::ENDPOINT));
         $this->response = json_decode($raw, true);
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
+        $this->triggerErrorIfAny();
 
         return $this->response;
     }

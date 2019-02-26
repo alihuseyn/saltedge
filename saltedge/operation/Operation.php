@@ -44,9 +44,10 @@ abstract class Operation
      * @param $query
      * @return string
      */
-    public function url($endpoint,array $query = [])
+    public function url(string $endpoint, array $query = [])
     {
-        $url = trim(self::URL . ltrim( $endpoint, '/'));
+
+        $url = trim(self::URL . ltrim($endpoint, '/'));
         if (!empty($query)) {
             $_ = [];
             foreach ($query as $q => $v) {
@@ -58,6 +59,20 @@ abstract class Operation
         }
 
         return $url;
+    }
+
+    /**
+     * Check error in the content of response and
+     * if any error exists then throw error
+     *
+     * @throws \Exception
+     * @return void
+     */
+    public function triggerErrorIfAny()
+    {
+        if (isset($this->response['error_class'])) {
+            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        }
     }
 
     /**

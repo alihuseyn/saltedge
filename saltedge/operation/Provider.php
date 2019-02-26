@@ -13,7 +13,7 @@ use SaltEdge\Request\SaltEdge;
 class Provider extends Operation
 {
     /**
-     * @var  string token operation endpoint for refresh
+     * @var  string provider operation endpoint
      */
     const ENDPOINT_PROVIDER = 'providers';
 
@@ -29,37 +29,30 @@ class Provider extends Operation
     /**
      * Retrieve provider information with given code
      * @param string $providerCode
-     * @return Provider
+     * @return array
      * @throws \Exception
      */
-    public function get(string $providerCode) : Provider
+    public function get(string $providerCode) : array
     {
-        $raw = $this->connection->get(self::ENDPOINT_PROVIDER.concat("/{$providerCode}"));
+        $endpoint = $this->url(self::ENDPOINT_PROVIDER.concat("/{$providerCode}"));
+        $raw = $this->connection->get($endpoint);
         $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
 
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
-
-        return $this;
+        return $this->response;
     }
 
     /**
      * Retrieve all provider lists
-     * @return Provider
+     * @return array
      * @throws \Exception
      */
-    public function all() : Provider
+    public function all() : array
     {
-        $raw = $this->connection->get(self::ENDPOINT_PROVIDER);
+        $raw = $this->connection->get($this->url(self::ENDPOINT_PROVIDER));
         $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
 
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
-
-        return $this;
+        return $this->response;
     }
 }
