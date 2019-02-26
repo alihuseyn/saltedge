@@ -60,7 +60,8 @@ class Token extends Operation
             'return_login_id' => true,
         ];
 
-        if (empty($params) || !isset($params['customer_id']) || $params['customer_id'] == -1 || !is_int($params['customer_id'])) {
+        if (empty($params) || !isset($params['customer_id']) ||
+                $params['customer_id'] == -1 || !is_int($params['customer_id'])) {
             throw new \Exception("Customer identifier can't be empty or null and identifier must be in numeric type");
         }
 
@@ -70,25 +71,9 @@ class Token extends Operation
         // Make request
         $raw = $this->connection->post($this->url(self::ENDPOINT_CREATE), $body);
         $this->response = json_decode($raw, true);
-
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
+        $this->triggerErrorIfAny();
 
         return $this;
-    }
-
-    /**
-     * Call connect function with configured parameters
-     * It is used for simplified and fast access to connect function
-     * @param $clientId
-     * @return Token
-     * @throws \Exception
-     */
-    public function connectWithClientId($clientId) : Token
-    {
-        return $this->connect(['client_id' => $clientId]);
     }
 
     /**
@@ -107,8 +92,8 @@ class Token extends Operation
     }
 
     /**
-     * Allows you to create a token, which will be used to access 
-     * Salt Edge Connect to reconnect a login. You will receive a connect_url field, 
+     * Allows you to create a token, which will be used to access
+     * Salt Edge Connect to reconnect a login. You will receive a connect_url field,
      * which allows you to enter directly to Salt Edge Connect with your newly generated token.
      *
      * @see https://docs.saltedge.com/account_information/v4/#tokens-reconnect
@@ -123,7 +108,7 @@ class Token extends Operation
             'fetch_scopes' => [ 'accounts', 'transactions' ],
             'locale' => 'tr',
             'return_login_id' => true
-        ];  
+        ];
 
         if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
             throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
@@ -135,30 +120,14 @@ class Token extends Operation
         // Make request
         $raw = $this->connection->post($this->url(self::ENDPOINT_RECONNECT), $body);
         $this->response = json_decode($raw, true);
-
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
+        $this->triggerErrorIfAny();
 
         return $this;
     }
 
     /**
-     * Call reconnect function with configured parameters
-     * It is used for simplified and fast access to reconnect function
-     * @param $loginId
-     * @return Token
-     * @throws \Exception
-     */
-    public function reconnectWithLoginId($loginId) : Token
-    {
-        return $this->reconnect(['login_id' => $loginId]);
-    }
-
-    /**
-     * Allows you to create a token, which will be used to access Salt Edge Connect 
-     * to refresh a login. You will receive a connect_url field, which allows you to enter 
+     * Allows you to create a token, which will be used to access Salt Edge Connect
+     * to refresh a login. You will receive a connect_url field, which allows you to enter
      * directly to Salt Edge Connect with your newly generated token.
      *
      * @see https://docs.saltedge.com/account_information/v4/#tokens-refresh
@@ -173,7 +142,7 @@ class Token extends Operation
             'fetch_scopes' => [ 'accounts', 'transactions' ],
             'locale' => 'tr',
             'return_login_id' => true,
-        ];  
+        ];
 
         if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
             throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
@@ -185,24 +154,8 @@ class Token extends Operation
         // Make request
         $raw = $this->connection->post($this->url(self::ENDPOINT_REFRESH), $body);
         $this->response = json_decode($raw, true);
-
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
+        $this->triggerErrorIfAny();
 
         return $this;
-    }
-
-    /**
-     * Call refresh function with configured parameters
-     * It is used for simplified and fast access to refresh function
-     * @param $loginId
-     * @return Token
-     * @throws \Exception
-     */
-    public function refreshWithLoginId($loginId) : Token
-    {
-        return $this->refresh(['login_id' => $loginId]);
     }
 }

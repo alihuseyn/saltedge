@@ -55,10 +55,10 @@ class Transaction extends Operation
      * created_at (datetime)
      * updated_at (datetime)
      * @param array $params
-     * @return Transaction
+     * @return array
      * @throws \Exception
      */
-    public function fetch(array $params): Transaction
+    public function list(array $params): array
     {
 
         if (empty($params) || (!isset($params['account_id']) && !isset($params['login_id']))) {
@@ -79,12 +79,8 @@ class Transaction extends Operation
 
         $raw = $this->connection->get($url);
         $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
 
-        // Check for error response
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
-        }
-
-        return $this;
+        return $this->response;
     }
 }

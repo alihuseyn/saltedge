@@ -142,10 +142,10 @@ class SaltEdge
 
         // Sign the data
         $signingResult = openssl_sign(
-          $data,
-          $signature,
-          $this->privateKey,
-          OPENSSL_ALGO_SHA256
+            $data,
+            $signature,
+            $this->privateKey,
+            OPENSSL_ALGO_SHA256
         );
 
         if (!$signingResult) {

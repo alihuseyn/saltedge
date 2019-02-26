@@ -2,12 +2,12 @@
 
 namespace SaltEdge;
 
+use SaltEdge\Request\SaltEdge;
 use SaltEdge\Operation\Account;
 use SaltEdge\Operation\Provider;
 use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
-use SaltEdge\Request\SaltEdge;
-use SaltEdge\Operation\SaltEdgeUser;
+use SaltEdge\Operation\User;
 use SaltEdge\Operation\Category;
 
 /**
@@ -47,7 +47,12 @@ class Spectre
      */
     public static function instance($appId, $appSecret, $privateKeyPath, $privateKeyPass)
     {
-        return new Spectre($appId, $appSecret, $privateKeyPath, $privateKeyPass);
+        return new Spectre(
+            $appId,
+            $appSecret,
+            $privateKeyPath,
+            $privateKeyPass
+        );
     }
 
     /**
@@ -60,7 +65,6 @@ class Spectre
     }
 
     /**
-
      * Initialize transaction class and return it
      * @return Transaction
      */
@@ -79,17 +83,15 @@ class Spectre
     }
     
      /**
-
      * Create new customer and return it
      * @return Transaction
      */
-    public function user(): SaltEdgeUser
+    public function user(): User
     {
-        return new SaltEdgeUser($this->connection);
+        return new User($this->connection);
     }
     
     /**
-
      * Create new category class and return it
      * @return Transaction
      */
@@ -114,5 +116,4 @@ class Spectre
     {
         $this->connection->shutdown();
     }
-
 }
