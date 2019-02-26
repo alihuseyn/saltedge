@@ -3,6 +3,7 @@
 namespace SaltEdge;
 
 use SaltEdge\Operation\Account;
+use SaltEdge\Operation\Provider;
 use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
 use SaltEdge\Request\SaltEdge;
@@ -95,6 +96,15 @@ class Spectre
     public function category(): Category
     {
         return new Category($this->connection);
+    }
+
+    /**
+     * Create new provider class and return it
+     * @return Provider
+     */
+    public function provider(): Provider
+    {
+        return new Provider($this->connection);
     }
     
     /**
