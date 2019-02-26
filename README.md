@@ -1,10 +1,3 @@
-# saltedge
+# Saltedge API Client 
 
-SaltEdge Spectre API connection library
-
-```bash
-
-$ composer install
-$ php index.php
-
-```
+SaltEdge Spectre API connection library.

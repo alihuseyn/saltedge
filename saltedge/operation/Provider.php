@@ -2,6 +2,8 @@
 
 namespace SaltEdge\Operation;
 
+use SaltEdge\Request\SaltEdge;
+
 /**
  * Provider Class
  * This class helps to retrieve all available providers
