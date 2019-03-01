@@ -34,7 +34,7 @@ class Provider extends Operation
      */
     public function get(string $providerCode) : array
     {
-        $endpoint = $this->url(self::ENDPOINT_PROVIDER.concat("/{$providerCode}"));
+        $endpoint = $this->url(self::ENDPOINT_PROVIDER."/{$providerCode}");
         $raw = $this->connection->get($endpoint);
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
