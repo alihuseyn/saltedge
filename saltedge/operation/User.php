@@ -102,7 +102,7 @@ class User extends Operation
      */
     public function remove(string $id): array
     {
-        $raw = $this->connection->delete($this->url(self::ENDPOINT_CUSTOMER."/".$id));
+        $raw = $this->connection->delete($this->url(self::ENDPOINT_CUSTOMER."/{$id}"));
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
 
