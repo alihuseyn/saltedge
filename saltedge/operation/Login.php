@@ -28,11 +28,11 @@ class Login extends Operation
      * You can read more about next_id field, in the pagination section of the reference.
      *
      * @see https://docs.saltedge.com/reference/#logins-list
-     * @param  string $id
+     * @param  string $id - customer id
      * @return array
      * @throws \Exception
      */
-    public function get(string $id) : array
+    public function all(string $id) : array
     {
         $endpoint = $this->url(self::ENDPOINT, ['customer_id' => $id]);
         $raw = $this->connection->get($endpoint);
@@ -43,8 +43,26 @@ class Login extends Operation
     }
 
     /**
+     * Retrieve login
+     * Returns a single login object.
+     *
+     * @see https://docs.saltedge.com/account_information/v4/#logins
+     * @param  string $id - customer id
+     * @return array
+     * @throws \Exception
+     */
+    public function get(string $id) : array
+    {
+        $raw = $this->connection->get($this->url(self::ENDPOINT."/{$id}"));
+        $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
+
+        return $this->response;
+    }
+
+    /**
      * Remove login
-     * Removes a login from our system. 
+     * Removes a login from our system.
      * All the associated accounts and transactions to that login will be destroyed as well.
      *
      * -id (string, required) - the id of login
@@ -62,5 +80,4 @@ class Login extends Operation
 
         return $this->response;
     }
-
 }
