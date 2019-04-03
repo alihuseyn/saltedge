@@ -83,4 +83,54 @@ class Transaction extends Operation
 
         return $this->response;
     }
+
+    /**
+     * Mark a list of transactions as duplicated.
+     * @param array $transactions - list of transaction id
+     * @return itself
+     */
+    public function duplicate(array $transactions) : array
+    {
+        if (empty($transactions)) {
+            throw new \Exception("The list of transactions can't be empty");
+        }
+
+        $url = $this->url(self::ENDPOINT_TRANSACTION . '/duplicate');
+
+        $body = array_map(function ($transaction) {
+            return ['transaction_id' => $transaction];
+        }, $transactions);
+
+
+        $raw = $this->connection->post($url, [ 'data' => $body ]);
+        $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
+
+        return $this;
+    }
+
+    /**
+     * Remove duplicated flag from a list of transactions.
+     * @param array $transactions - list of transaction id
+     * @return itself
+     */
+    public function unduplicate(array $transactions) : array
+    {
+        if (empty($transactions)) {
+            throw new \Exception("The list of transactions can't be empty");
+        }
+
+        $url = $this->url(self::ENDPOINT_TRANSACTION . '/unduplicate');
+
+        $body = array_map(function ($transaction) {
+            return ['transaction_id' => $transaction];
+        }, $transactions);
+
+
+        $raw = $this->connection->post($url, [ 'data' => $body ]);
+        $this->response = json_decode($raw, true);
+        $this->triggerErrorIfAny();
+
+        return $this;
+    }
 }
