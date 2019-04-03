@@ -89,7 +89,7 @@ class Transaction extends Operation
      * @param array $transactions - list of transaction id
      * @return itself
      */
-    public function duplicate(array $transactions) : array
+    public function duplicate(array $transactions)
     {
         if (empty($transactions)) {
             throw new \Exception("The list of transactions can't be empty");
@@ -102,7 +102,7 @@ class Transaction extends Operation
         }, $transactions);
 
 
-        $raw = $this->connection->post($url, [ 'data' => $body ]);
+        $raw = $this->connection->put($url, [ 'data' => $body ]);
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
 
@@ -114,7 +114,7 @@ class Transaction extends Operation
      * @param array $transactions - list of transaction id
      * @return itself
      */
-    public function unduplicate(array $transactions) : array
+    public function unduplicate(array $transactions)
     {
         if (empty($transactions)) {
             throw new \Exception("The list of transactions can't be empty");
@@ -127,7 +127,7 @@ class Transaction extends Operation
         }, $transactions);
 
 
-        $raw = $this->connection->post($url, [ 'data' => $body ]);
+        $raw = $this->connection->put($url, [ 'data' => $body ]);
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
 
