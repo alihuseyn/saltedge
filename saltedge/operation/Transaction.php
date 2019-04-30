@@ -58,10 +58,10 @@ class Transaction extends Operation
      * created_at (datetime)
      * updated_at (datetime)
      * @param array $params
-     * @return array
+     * @return SaltEdge\Operation\Transaction
      * @throws \Exception
      */
-    public function list(array $params): array
+    public function list(array $params)
     {
 
         if (empty($params) || (!isset($params['account_id']) && !isset($params['login_id']))) {
