@@ -38,7 +38,7 @@ trait HasPagination
                 if (!empty($nextPage)) {
                     // Remove /api/v4 part according to
                     // the version of api and generate endpoint
-                    $nextPage = end($nextPage.split(self::API_VERSION));
+                    $nextPage = end(explode(self::API_VERSION, $nextPage));
                     $url = $this->url($nextPage);
 
                     $raw = $this->connection->get($url);
