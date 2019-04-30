@@ -46,6 +46,7 @@ class Provider extends Operation
      * Retrieve all provider lists
      * @return array
      * @throws \Exception
+     * @todo  alihuseyng return pagination
      */
     public function all() : array
     {

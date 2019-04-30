@@ -3,6 +3,7 @@
 namespace SaltEdge\Operation;
 
 use SaltEdge\Request\SaltEdge;
+use SaltEdge\Traits\HasPagination;
 
 /**
  * Class Transaction
@@ -14,6 +15,8 @@ use SaltEdge\Request\SaltEdge;
  */
 class Transaction extends Operation
 {
+
+    use HasPagination;
 
     /**
      * @var string transactions endpoint
@@ -81,7 +84,7 @@ class Transaction extends Operation
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
 
-        return $this->response;
+        return $this;
     }
 
     /**

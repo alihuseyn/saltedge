@@ -31,6 +31,7 @@ class Login extends Operation
      * @param  string $id - customer id
      * @return array
      * @throws \Exception
+     * @todo  alihuseyng pagination
      */
     public function all(string $id) : array
     {

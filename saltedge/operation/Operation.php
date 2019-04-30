@@ -15,7 +15,12 @@ abstract class Operation
     /**
      * @param string URL api base url
      */
-    const URL = 'https://www.saltedge.com/api/v4/';
+    const URL = 'https://www.saltedge.com/api/';
+
+    /**
+     * @param string API version
+     */
+    const API_VERSION = 'v4';
 
     /**
      * @var SaltEdge $connection Connection information and API request functionality
@@ -47,7 +52,7 @@ abstract class Operation
     public function url(string $endpoint, array $query = [])
     {
 
-        $url = trim(self::URL . ltrim($endpoint, '/'));
+        $url = trim(self::URL . self::API_VERSION . '/' . ltrim($endpoint, '/'));
         if (!empty($query)) {
             $_ = [];
             foreach ($query as $q => $v) {

@@ -37,6 +37,7 @@ class Account extends Operation
      * @param  string $loginId
      * @return array
      * @throws \Exception
+     * @todo  alihuseyng pagination
      */
     public function list(string $loginId): array
     {
