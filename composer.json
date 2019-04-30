@@ -19,7 +19,8 @@
         "psr-4": {
             "SaltEdge\\": "saltedge/",
             "SaltEdge\\Request\\": "saltedge/request/",
-            "SaltEdge\\Operation\\": "saltedge/operation/"
+            "SaltEdge\\Operation\\": "saltedge/operation/",
+            "SaltEdge\\Traits\\": "saltedge/traits/"
         }
     }
 }

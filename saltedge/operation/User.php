@@ -68,7 +68,7 @@ class User extends Operation
     /**
      * List all of your app’s customers.
      * This route is available only for web applications, not mobile ones.
-     *
+     * @todo alihuseyng list return pagination 
      * @see https://docs.saltedge.com/reference/#customers
      * @return array
      * @throws \Exception
