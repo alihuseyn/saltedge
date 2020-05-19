@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "nesbot/carbon": "^1.24.1"
+        "nesbot/carbon": ">=1.24.1"
     },
     "autoload": {
         "psr-4": {
