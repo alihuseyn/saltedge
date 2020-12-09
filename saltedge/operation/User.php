@@ -79,7 +79,7 @@ class User extends Operation
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
 
-        return $this;
+        return $this->response;
     }
     
     /**

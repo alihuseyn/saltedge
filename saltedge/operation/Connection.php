@@ -4,12 +4,12 @@ namespace SaltEdge\Operation;
 
 use SaltEdge\Request\SaltEdge;
 
-class Login extends Operation
+class Connection extends Operation
 {
     /**
      * @var string logins operation endpoint
      */
-    const ENDPOINT = 'logins';
+    const ENDPOINT = 'connections';
 
     /**
      * Constructor
@@ -21,13 +21,13 @@ class Login extends Operation
     }
 
     /**
-     * Listing logins
-     * Returns all the logins accessible to your application. The logins are sorted in
-     * ascending order of their ID, so the newest logins will come last. We recommend you
+     * Listing Connections
+     * Returns all the connections accessible to your application. The Connections are sorted in
+     * ascending order of their ID, so the newest Connections will come last. We recommend you
      * fetch the whole list of logins to check whether any of the properties have changed.
      * You can read more about next_id field, in the pagination section of the reference.
      *
-     * @see https://docs.saltedge.com/reference/#logins-list
+     * @see https://docs.saltedge.com/account_information/v5/#connections-list
      * @param  string $id - customer id
      * @return array
      * @throws \Exception
@@ -44,10 +44,10 @@ class Login extends Operation
     }
 
     /**
-     * Retrieve login
-     * Returns a single login object.
+     * Retrieve Connection
+     * Returns a single Connection object.
      *
-     * @see https://docs.saltedge.com/account_information/v4/#logins
+     * @see https://docs.saltedge.com/account_information/v5/#connections-show
      * @param  string $id - customer id
      * @return array
      * @throws \Exception
@@ -62,13 +62,13 @@ class Login extends Operation
     }
 
     /**
-     * Remove login
-     * Removes a login from our system.
+     * Remove Connection
+     * Removes a Connection from our system.
      * All the associated accounts and transactions to that login will be destroyed as well.
      *
      * -id (string, required) - the id of login
      *
-     * @see https://docs.saltedge.com/account_information/v4/#logins-remove
+     * @see https://docs.saltedge.com/account_information/v5/#connections-remove
      * @param  $id
      * @return array
      * @throws \Exception

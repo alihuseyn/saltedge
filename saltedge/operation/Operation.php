@@ -20,7 +20,7 @@ abstract class Operation
     /**
      * @param string API version
      */
-    const API_VERSION = 'v4';
+    const API_VERSION = 'v5';
 
     /**
      * @var SaltEdge $connection Connection information and API request functionality
