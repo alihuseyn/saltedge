@@ -38,8 +38,8 @@ class Transaction extends Operation
      *
      * Parameters:
      * ----------------
-     * account_id (string, optional) - the id of the account, required unless login_id parameter is sent
-     * login_id (string, optional) - the id of the login, required unless account_id parameter is sent
+     * connection_id (string)
+     * account_id (string, optional)
      * from_id (string, optional) - the id from which the next page of transactions starts
      *
      * Attributes:
@@ -64,19 +64,15 @@ class Transaction extends Operation
     public function list(array $params)
     {
 
-        if (empty($params) || (!isset($params['account_id']) && !isset($params['login_id']))) {
+        if (empty($params) || (!isset($params['connection_id']))) {
             throw new \Exception("Account ID or Login ID can't be empty or null.");
         }
 
         // Make Request
         // Generate required url with query parameters
-        $url = isset($params['account_id'])
-            ? $this->url(self::ENDPOINT_TRANSACTION, [
-                'account_id' => $params['account_id'],
-                'from_id' => $params['from_id'] ?? null
-            ])
-            : $this->url(self::ENDPOINT_TRANSACTION, [
-                'login_id' => $params['login_id'],
+        $url = $this->url(self::ENDPOINT_TRANSACTION, [
+                'connection_id' => $params['connection_id'],
+                'account_id' => $params['account_id'] ?? null,
                 'from_id' => $params['from_id'] ?? null
             ]);
 
@@ -89,21 +85,19 @@ class Transaction extends Operation
 
     /**
      * Mark a list of transactions as duplicated.
-     * @param array $transactions - list of transaction id
+     * @param string $customer_id - The id of the customer"
+     * @param array $transaction_ids - list of transaction id
      * @return itself
      */
-    public function duplicate(array $transactions)
+    public function duplicate(string $customer_id, array $transaction_ids)
     {
-        if (empty($transactions)) {
-            throw new \Exception("The list of transactions can't be empty");
+        if (empty($transaction_ids) || empty($customer_id)) {
+            throw new \Exception("The list of transactions and customer id can't be empty");
         }
 
         $url = $this->url(self::ENDPOINT_TRANSACTION . '/duplicate');
 
-        $body = array_map(function ($transaction) {
-            return ['transaction_id' => $transaction];
-        }, $transactions);
-
+        $body = ['customer_id' => $customer_id , 'transaction_ids' => $transaction_ids];
 
         $raw = $this->connection->put($url, [ 'data' => $body ]);
         $this->response = json_decode($raw, true);
@@ -114,21 +108,19 @@ class Transaction extends Operation
 
     /**
      * Remove duplicated flag from a list of transactions.
-     * @param array $transactions - list of transaction id
+     * @param string $customer_id - The id of the customer"
+     * @param array $transaction_ids - list of transaction id
      * @return itself
      */
-    public function unduplicate(array $transactions)
+    public function unduplicate(string $customer_id, array $transaction_ids)
     {
-        if (empty($transactions)) {
-            throw new \Exception("The list of transactions can't be empty");
+          if (empty($transaction_ids) || empty($customer_id)) {
+            throw new \Exception("The list of transactions and customer id can't be empty");
         }
 
         $url = $this->url(self::ENDPOINT_TRANSACTION . '/unduplicate');
 
-        $body = array_map(function ($transaction) {
-            return ['transaction_id' => $transaction];
-        }, $transactions);
-
+        $body = ['customer_id' => $customer_id , 'transaction_ids' => $transaction_ids];
 
         $raw = $this->connection->put($url, [ 'data' => $body ]);
         $this->response = json_decode($raw, true);

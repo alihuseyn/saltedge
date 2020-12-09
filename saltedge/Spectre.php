@@ -9,7 +9,7 @@ use SaltEdge\Operation\Token;
 use SaltEdge\Operation\Transaction;
 use SaltEdge\Operation\User;
 use SaltEdge\Operation\Category;
-use SaltEdge\Operation\Login;
+use SaltEdge\Operation\Connection;
 
 /**
  * Class Spectre
@@ -114,9 +114,9 @@ class Spectre
      * Create new login class and return it
      * @return Login
      */
-    public function login(): Login
+    public function connection(): Connection
     {
-        return new Login($this->connection);
+        return new Connection($this->connection);
     }
     
     /**

@@ -14,7 +14,7 @@ class Category extends Operation
      * @var string categories endpoint
      */
     const ENDPOINT = "categories";
-     const ENDPOINT_LEARN = "categories/learn";
+    const ENDPOINT_LEARN = "categories/learn";
 
     /**
      * Transaction constructor.
@@ -49,11 +49,15 @@ class Category extends Operation
      * @return array
      * @throws \Exception
      */
-    public function change(string $transaction_id, string $category_code, bool $immediate = null ) 
+    public function change(string $transaction_id, string $category_code, string $customer_id, bool $immediate = null)
     {
       
-        $body = [ 'data' => [['transaction_id' => $transaction_id,'category_code'=>$category_code,'immediate' => $immediate]]];
-        $raw = $this->connection->post($this->url(self::ENDPOINT_LEARN), $body);
+        
+        $body = ['customer_id' => $customer_id,'transactions' => [['id' => $transaction_id,'category_code'=>$category_code,'immediate' => $immediate]]];
+
+
+        var_dump($body);
+        $raw = $this->connection->post($this->url(self::ENDPOINT_LEARN), [ 'data' => $body ]);
         $this->response = json_decode($raw, true);
         $this->triggerErrorIfAny();
         return $this->response;

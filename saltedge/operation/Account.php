@@ -23,26 +23,24 @@ class Account extends Operation
     
 
     /**
-     * Listing accounts
-     * You can see the list of accounts of a login. The accounts
-     * are sorted in ascending order of their ID, so the newest
-     * accounts will come last. You can read more about next_id
-     * field, in the pagination section of the reference.
+     * You can see the list of accounts of a connection. The accounts are sorted in ascending order of their ids,
+     * so the newest accounts will come last. You can read more about next_id field,
+     * in the pagination section of the reference.
      *
      * from_id (string,optional) -the id from which the next page of accounts starts
-     * login_id (string,optional) the ID of the login containing the accounts
+     * connection_id (string) the ID of the connection containing the accounts
      * customer_id (string,optional) -the ID of the customer containing the accounts.
      * Note: Will be ignored if login_id is present.
      *
-     * @param  string $loginId
+     * @param  string $ConnectionId
      * @return array
      * @throws \Exception
      * @todo  alihuseyng pagination
      */
-    public function list(string $loginId): array
+    public function list(string $ConnectionId): array
     {
         
-        $endpoint = $this->url(self::ENDPOINT, ['login_id' => $loginId]);
+        $endpoint = $this->url(self::ENDPOINT, ['connection_id' => $ConnectionId]);
         
         // Make request
         $raw = $this->connection->get($endpoint);

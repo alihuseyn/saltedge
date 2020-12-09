@@ -19,17 +19,17 @@ class Token extends Operation
     /**
      * @var string token operation endpoint for create
      */
-    const ENDPOINT_CREATE = 'tokens/create';
+    const ENDPOINT_CREATE = 'connect_sessions/create';
 
     /**
      * @var  string token operation endpoint for reconnect
      */
-    const ENDPOINT_RECONNECT = 'tokens/reconnect';
+    const ENDPOINT_RECONNECT = 'connect_sessions/reconnect';
 
     /**
      * @var  string token operation endpoint for refresh
      */
-    const ENDPOINT_REFRESH = 'tokens/refresh';
+    const ENDPOINT_REFRESH = 'connect_sessions/refresh';
 
     /**
      * Constructor
@@ -45,7 +45,7 @@ class Token extends Operation
      * You will receive a connect_url field, which allows you to enter directly to Salt Edge Connect
      * with your newly generated token. Explanation of parameters are as below:
      *
-     * @see https://docs.saltedge.com/account_information/v4/#tokens-create
+     * @see https://docs.saltedge.com/account_information/v5/#connect_sessions
      * @param array $params Required parameters
      * @throws \Exception
      * @return Token
@@ -53,11 +53,12 @@ class Token extends Operation
     public function connect(array $params): Token
     {
         $defaultParameters = [
-            'customer_id' => -1,     // Required
-            'allowed_countries' => ["TR"],
-            'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'locale' => 'tr',
-            'return_login_id' => true,
+               'customer_id' => '',     // Required
+               'consent' => [
+                  'scopes' => [
+                    'account_details',
+                    'transactions_details']],
+                'return_connection_id' => true
         ];
 
         if (empty($params) || !isset($params['customer_id']) ||
@@ -96,7 +97,7 @@ class Token extends Operation
      * Salt Edge Connect to reconnect a login. You will receive a connect_url field,
      * which allows you to enter directly to Salt Edge Connect with your newly generated token.
      *
-     * @see https://docs.saltedge.com/account_information/v4/#tokens-reconnect
+     * @see https://docs.saltedge.com/account_information/v5/#connect_sessions-reconnect
      * @param array $params Required parameters
      * @throws \Exception
      * @return Token
@@ -104,14 +105,18 @@ class Token extends Operation
     public function reconnect(array $params) : Token
     {
         $defaultParameters = [
-            'login_id' => '',     // Required
-            'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'locale' => 'tr',
-            'return_login_id' => true
+            'connection_id' => '',     // Required
+            'consent' => [
+                  'scopes' => [
+                    'account_details',
+                    'transactions_details'
+                  ]
+                ],
+            'return_connection_id' => true
         ];
 
-        if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
-            throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
+        if (empty($params) || !isset($params['connection_id']) || empty($params['connection_id'])) {
+            throw new \Exception("Connection identifier can't be empty or null and identifier must be defined.");
         }
 
         // Request Body
@@ -130,7 +135,7 @@ class Token extends Operation
      * to refresh a login. You will receive a connect_url field, which allows you to enter
      * directly to Salt Edge Connect with your newly generated token.
      *
-     * @see https://docs.saltedge.com/account_information/v4/#tokens-refresh
+     * @see https://docs.saltedge.com/account_information/v5/#connect_sessions-refresh
      * @param array $params Required parameters
      * @throws \Exception
      * @return Token
@@ -138,14 +143,18 @@ class Token extends Operation
     public function refresh(array $params) : Token
     {
         $defaultParameters = [
-            'login_id' => '',     // Required
-            'fetch_scopes' => [ 'accounts', 'transactions' ],
-            'locale' => 'tr',
-            'return_login_id' => true,
+            'connection_id' => '',     // Required
+            'consent' => [
+                  'scopes' => [
+                    'account_details',
+                    'transactions_details'
+                  ]
+                ],
+            'return_connection_id' => true,
         ];
 
-        if (empty($params) || !isset($params['login_id']) || empty($params['login_id'])) {
-            throw new \Exception("Login identifier can't be empty or null and identifier must be defined.");
+        if (empty($params) || !isset($params['connection_id']) || empty($params['connection_id'])) {
+            throw new \Exception("Connection identifier can't be empty or null and identifier must be defined.");
         }
 
         // Request Body
