@@ -75,8 +75,8 @@ abstract class Operation
      */
     public function triggerErrorIfAny()
     {
-        if (isset($this->response['error_class'])) {
-            throw new \Exception("[{$this->response['error_class']}]  {$this->response['error_message']}");
+        if (isset($this->response['error'])) {
+            throw new \Exception($this->response['error']['message']);
         }
     }
 
